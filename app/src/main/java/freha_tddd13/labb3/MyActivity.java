@@ -1,4 +1,4 @@
-package twoberg.se.testthread;
+package freha_tddd13.labb3;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -16,6 +16,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import freha_tddd13.labb3.R;
 
 
 public class MyActivity extends Activity {
@@ -87,7 +89,7 @@ public class MyActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.my, menu);
+        getMenuInflater().inflate(R.menu.menu_my, menu);
 
         return true;
     }
