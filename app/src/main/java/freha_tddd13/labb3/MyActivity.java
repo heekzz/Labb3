@@ -66,7 +66,7 @@ public class MyActivity extends Activity {
     private String doNetworkCall(){
         try {
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpGet httpget = new HttpGet("http://flask-afteach.rhcloud.com/getnames/3/Emm");
+            HttpGet httpget = new HttpGet("http://flask-afteach.rhcloud.com/getnames/2/He");
             HttpResponse response = null;
             response = httpclient.execute(httpget);
 
