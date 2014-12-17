@@ -6,6 +6,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -14,6 +16,8 @@ public class MainActivity extends ActionBarActivity {
 
     EditText textField;
     TextView textView;
+    String result;
+    int ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +26,7 @@ public class MainActivity extends ActionBarActivity {
 
         textField = (EditText) findViewById(R.id.textField);
         textView = (TextView) findViewById(R.id.textView);
-
-        final Network network = new Network();
+        result = "initial text";
 
         textField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -33,19 +36,31 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                network.getResult(s.toString());
+                loadData(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
+    }
 
-
-
-
+    private void loadData(final String input) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final String result = new Network().getResult(ID, input);
+                ID++;
+                textView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.setText(result);
+                    }
+                });
+            }
+        });
+        thread.start();
     }
 
 

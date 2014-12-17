@@ -12,12 +12,10 @@ import java.io.InputStreamReader;
 
 
 public class Network {
-    private int ID;
 
     public Network() {
-        this.ID = 0;
-    }
 
+    }
 
     private String doNetworkCall(int ID, String input){
         try {
@@ -39,19 +37,11 @@ public class Network {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+        return "Det blev inget :(";
+
     }
 
-    public String getResult(String input) {
-        String result = "";
-        final String in = input;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final String result = doNetworkCall(ID, in);
-            }
-        });
-        ID++;
-        return result;
+    public String getResult(int ID, String input) {
+        return doNetworkCall(ID, input);
     }
 }
