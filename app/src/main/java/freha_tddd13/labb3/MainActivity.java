@@ -6,18 +6,25 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    EditText textField;
-    TextView textView;
-    String result;
-    int ID = 1;
+    private EditText textField;
+    private TextView textView;
+    private String result;
+    private int ID = 1;
+    private Map<Integer, List<String>> searchResult = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +53,25 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+
     private void loadData(final String input) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 final String result = new Network().getResult(ID, input);
+                List<String> words = new LinkedList<>();
+                Pattern regex = Pattern.compile("([A-ZÅÄÖ]+)");
+                Matcher match = regex.matcher(result);
+                while(match.find()) {
+                    words.add(match.group(1));
+                }
+                searchResult.put(ID, words);
+                final String yolo = makeString(ID, words);
                 ID++;
                 textView.post(new Runnable() {
                     @Override
                     public void run() {
-                        textView.setText(result);
+                        textView.setText(yolo);
                     }
                 });
             }
@@ -63,6 +79,14 @@ public class MainActivity extends ActionBarActivity {
         thread.start();
     }
 
+    private String makeString(int id, List<String> words) {
+        String swag = "ID: " + Integer.toString(id) + "  WORDS: ";
+        for (String word: words) {
+            swag = swag + " " + word;
+        }
+        return swag;
+
+    }
 
 
     @Override
@@ -86,4 +110,5 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
