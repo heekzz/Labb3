@@ -3,12 +3,15 @@ package freha_tddd13.labb3;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -31,25 +34,29 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        InteractiveSearcher interactiveSearcher = new InteractiveSearcher(this);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50);
+        addContentView(interactiveSearcher, param);
+
         textField = (EditText) findViewById(R.id.textField);
         textView = (TextView) findViewById(R.id.textView);
         result = "initial text";
 
-        textField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                loadData(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+//        textField.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                loadData(s.toString());
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//        });
 
     }
 
@@ -66,12 +73,11 @@ public class MainActivity extends ActionBarActivity {
                     words.add(match.group(1));
                 }
                 searchResult.put(ID, words);
-                final String yolo = makeString(ID, words);
                 ID++;
                 textView.post(new Runnable() {
                     @Override
                     public void run() {
-                        textView.setText(yolo);
+                        textView.setText("");
                     }
                 });
             }
@@ -79,14 +85,6 @@ public class MainActivity extends ActionBarActivity {
         thread.start();
     }
 
-    private String makeString(int id, List<String> words) {
-        String swag = "ID: " + Integer.toString(id) + "  WORDS: ";
-        for (String word: words) {
-            swag = swag + " " + word;
-        }
-        return swag;
-
-    }
 
 
     @Override
